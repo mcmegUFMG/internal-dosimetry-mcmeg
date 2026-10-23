@@ -681,6 +681,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span>What is SAF?</span>
     </button>
+    <button class="nav-btn nav-btn-highlight" id="btnOpenPhantom" title="What is a Computational Phantom? ICRP 110 &amp; ICRP 145 Reference Phantoms">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>What is a Phantom?</span>
+    </button>
     <button class="nav-btn" id="btnExportCSV" title="Export current selection to CSV">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
       <span>Export CSV</span>
@@ -880,6 +884,166 @@
   </div>
 </div>
 
+<!-- COMPUTATIONAL PHANTOM DOCUMENTATION MODAL -->
+<div class="modal-overlay" id="phantomModal">
+  <div class="theory-modal-card">
+    <div class="theory-head">
+      <div class="theory-title-group">
+        <h2>What is a Computational Phantom?</h2>
+        <div class="theory-meta-sub">Human Anatomical Models · ICRP Publication 110 (Voxel) · ICRP Publication 145 (Mesh MRCP)</div>
+      </div>
+      <button class="modal-close-btn" id="btnClosePhantom" title="Close (ESC)">✕</button>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <div style="display:flex; border-bottom:1px solid var(--border); background:var(--bg-subtle);">
+      <button class="theory-tab active" id="phantomTabBtn1" onclick="switchPhantomTab(1)" style="flex:1; padding:10px 16px; border:none; background:transparent; font-family:var(--font-sans); font-size:12.5px; font-weight:700; color:var(--text-secondary); cursor:pointer; border-bottom:2.5px solid transparent; transition:all 0.15s ease;">
+        ICRP 110 (Voxel Phantoms)
+      </button>
+      <button class="theory-tab" id="phantomTabBtn2" onclick="switchPhantomTab(2)" style="flex:1; padding:10px 16px; border:none; background:transparent; font-family:var(--font-sans); font-size:12.5px; font-weight:700; color:var(--text-secondary); cursor:pointer; border-bottom:2.5px solid transparent; transition:all 0.15s ease;">
+        ICRP 145 (Mesh-Type MRCPs)
+      </button>
+    </div>
+
+    <!-- TAB 1: ICRP Publication 110 (Voxel Phantoms) -->
+    <div class="theory-body" id="phantomTab1">
+      <div class="theory-section-card">
+        <h3><span class="section-badge">1</span> What is a Computational Phantom?</h3>
+        <p>
+          In radiation dosimetry and radiological protection, a <strong>computational phantom</strong> is a computerized, anatomical representation of the human body designed for use with Monte Carlo radiation transport simulation codes (such as PHITS, Geant4, MCNP, and FLUKA) [1,2].
+        </p>
+        <p>
+          Computational phantoms provide the spatial geometry, volume, density, and elemental composition (H, C, N, O, etc.) of organs and tissues. They enable physicists to simulate ionizing radiation interactions, energy deposition, and calculate <strong>Specific Absorbed Fractions (SAFs)</strong>, organ absorbed doses, and effective dose quantities that cannot be measured directly inside living human beings [1,3].
+        </p>
+        <ul class="theory-list" style="margin-top:6px;">
+          <li><strong>Stylized Phantoms (1960s–1980s):</strong> Early mathematical models (e.g., MIRD-5, Snyder phantoms) represented organs using simple geometric equations (spheres, cylinders, cones, and ellipsoids). While computationally lightweight, they lacked anatomical fidelity.</li>
+          <li><strong>Voxel Phantoms (ICRP 110, 2009):</strong> Reconstructed from three-dimensional medical tomographic images (CT and MRI) of real human subjects, partitioned into volumetric pixels (voxels).</li>
+          <li><strong>Mesh-Type Phantoms (ICRP 145, 2020):</strong> Advanced boundary-representation models constructed from high-definition polygon and tetrahedral volume meshes, eliminating voxel artifacts and enabling micrometer-level target layering.</li>
+        </ul>
+      </div>
+
+      <div class="theory-section-card">
+        <h3><span class="section-badge">2</span> ICRP Publication 110: Reference Voxel Phantoms</h3>
+        <p>
+          In 2009, the <strong>International Commission on Radiological Protection (ICRP)</strong>, in a joint effort with the International Commission on Radiation Units and Measurements (ICRU), released <strong>ICRP Publication 110</strong>: <em>Adult Reference Computational Phantoms</em> [1]. This landmark publication established the official international voxel models for the:
+        </p>
+        <ul class="theory-list">
+          <li><strong>Adult Reference Male (AM):</strong> Height: 1.76 m | Body Mass: 73 kg (composed of approximately $1.95 \times 10^6$ active voxels with dimensions $2.137 \times 2.137 \times 8.0\text{ mm}^3$) [1].</li>
+          <li><strong>Adult Reference Female (AF):</strong> Height: 1.63 m | Body Mass: 60 kg (composed of approximately $3.88 \times 10^6$ active voxels with dimensions $1.775 \times 1.775 \times 4.84\text{ mm}^3$) [1].</li>
+        </ul>
+        <p>
+          These models were derived from high-resolution CT scans of real individuals and then systematically modified voxel-by-voxel so that organ masses and body dimensions strictly matched the standard physiological reference parameters recommended in <strong>ICRP Publication 89</strong> [1,2]. Over 140 segmented tissues and organs were defined with specific elemental compositions and densities, providing the baseline for reference dose conversion coefficients in ICRP Publications 116, 119, and 133 [1].
+        </p>
+      </div>
+
+      <div class="theory-section-card">
+        <h3><span class="section-badge">3</span> Structural Limitations of Voxel Models</h3>
+        <p>
+          Although ICRP 110 provided a monumental leap in anatomical realism compared to stylized models, voxel-based geometry has fundamental constraints [1,4]:
+        </p>
+        <ul class="theory-list">
+          <li><strong>Voxel "Stair-Stepping" Artifacts:</strong> Smooth, curved organ surfaces are approximated by discrete cubic blocks, producing artificial staircase-like boundaries that distort local surface doses and particle transport at tissue interfaces.</li>
+          <li><strong>Inability to Model Microscopic Target Layers:</strong> Key radiosensitive target tissues often consist of extremely thin layers:
+            <ul style="margin-left:16px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
+              <li>The <em>skin basal layer</em> ($50\text{–}100\,\mu\text{m}$ depth);</li>
+              <li>The <em>lens of the eye</em> sensitive regions (anterior subcapsular epithelium);</li>
+              <li>The target <em>mucosal layer</em> in the walls of the stomach, small intestine, colon, and urinary bladder.</li>
+            </ul>
+            In a voxel phantom, resolving these micrometer-thick layers across the entire body would require billions of voxels, exceeding practical computer memory limits.
+          </li>
+          <li><strong>Rigid Posture:</strong> Voxel matrices are static grids and cannot be deformed or articulated into realistic working postures (e.g., seated, bending, or walking).</li>
+        </ul>
+      </div>
+
+      <div class="theory-section-card" style="background: var(--bg-subtle); border-left: 3px solid var(--accent);">
+        <h3 style="border-bottom:none; padding-bottom:0;">References</h3>
+        <ol style="margin-left:18px; display:flex; flex-direction:column; gap:8px; font-size:12.5px;">
+          <li>
+            <strong>ICRP, 2009.</strong> <em>Adult Reference Computational Phantoms</em>. ICRP Publication 110. Ann. ICRP 39 (2). 
+            <br>
+            Official ICRP Page: <a href="https://www.icrp.org/publication.asp?id=icrp%20publication%20110" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">icrp.org/publication.asp?id=icrp publication 110</a> 
+            | DOI: <a href="https://doi.org/10.1016/j.icrp.2009.09.001" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">10.1016/j.icrp.2009.09.001</a>
+          </li>
+          <li>
+            <strong>ICRP, 2002.</strong> <em>Basic Anatomical and Physiological Data for Use in Radiological Protection: Reference Values</em>. ICRP Publication 89. Ann. ICRP 32 (3-4). 
+            <br>
+            Official ICRP Page: <a href="https://www.icrp.org/publication.asp?id=ICRP%20Publication%2089" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">icrp.org/publication.asp?id=ICRP Publication 89</a>
+          </li>
+          <li>
+            <strong>ICRP, 2007.</strong> <em>The 2007 Recommendations of the International Commission on Radiological Protection</em>. ICRP Publication 103. Ann. ICRP 37 (2-4).
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- TAB 2: ICRP Publication 145 (Mesh-Type MRCPs) -->
+    <div class="theory-body" id="phantomTab2" style="display:none;">
+      <div class="theory-section-card">
+        <h3><span class="section-badge">1</span> From Voxel to Mesh: The ICRP Publication 145 Paradigm</h3>
+        <p>
+          To overcome the fundamental limitations of voxel-based representations while maintaining total consistency with ICRP 89 anatomical reference data and ICRP 110 organ masses, the ICRP Task Group 103 developed the <strong>Adult Mesh-Type Reference Computational Phantoms (MRCPs)</strong>, published in <strong>ICRP Publication 145 (2020)</strong> [1].
+        </p>
+        <p>
+          The MRCPs convert the voxel structures of the ICRP 110 phantoms into high-definition <strong>polygon surface meshes</strong> and internal volume-filling <strong>tetrahedral solid meshes</strong> (MRCP-AM for the Reference Male and MRCP-AF for the Reference Female) [1,2].
+        </p>
+      </div>
+
+      <div class="theory-section-card">
+        <h3><span class="section-badge">2</span> Key Innovations &amp; Advantages of MRCPs</h3>
+        <ul class="theory-list">
+          <li><strong>Smooth Anatomical Surfaces:</strong> By replacing cubic voxels with continuous polygon meshes, the staircase artifact is completely eliminated, accurately reproducing organic curves, tissue boundaries, and organ interfaces [1].</li>
+          <li><strong>Direct Modeling of Micrometer-Thick Target Layers:</strong> For the first time, micrometer-scale radiosensitive stem cell layers are incorporated directly into whole-body reference phantoms:
+            <ul style="margin-left:16px; margin-top:4px; display:flex; flex-direction:column; gap:4px;">
+              <li>The <em>basal layer of the skin</em> ($50\text{–}100\,\mu\text{m}$ depth) is modeled explicitly as a continuous sub-millimeter shell;</li>
+              <li>The <em>eye lens</em> is delineated into the anterior capsule, epithelial germinative zone, and nucleus;</li>
+              <li>The <em>alimentary tract organs</em> (esophagus, stomach, small intestine, colon) and <em>urinary bladder</em> include explicitly modeled mucosal layers and wall structures.</li>
+            </ul>
+          </li>
+          <li><strong>Organ Subregion Segmentation:</strong> Multiple subregions are segmented within complex organs (such as the renal cortex, medulla, and pelvis in the kidneys), providing detailed localized internal dosimetry.</li>
+          <li><strong>Deformable Posture:</strong> Being surface mesh-based, the phantoms can be articulated and transformed into realistic non-standing postures (e.g., sitting, kneeling, or lying down) for occupational exposure scenarios [1,2].</li>
+        </ul>
+      </div>
+
+      <div class="theory-section-card">
+        <h3><span class="section-badge">3</span> Application in This Study (PHITS 3.34)</h3>
+        <p>
+          The Specific Absorbed Fractions (SAFs) displayed in this explorer were simulated using the <strong>ICRP 145 Adult Male Mesh Phantom (MRCP-AM)</strong> [1,3].
+        </p>
+        <p>
+          By tracking radiation transport directly through tetrahedral mesh elements in the <strong>PHITS 3.34</strong> Monte Carlo code [3], energy deposition from monoenergetic photons and secondary electrons is calculated with high spatial fidelity. For organs with multiple segmented regions (such as kidneys with cortex, medulla, and pelvis), the total organ SAF is evaluated via a mass-weighted average of the subregion SAF values [3].
+        </p>
+      </div>
+
+      <div class="theory-section-card" style="background: var(--bg-subtle); border-left: 3px solid var(--accent);">
+        <h3 style="border-bottom:none; padding-bottom:0;">References</h3>
+        <ol style="margin-left:18px; display:flex; flex-direction:column; gap:8px; font-size:12.5px;">
+          <li>
+            <strong>ICRP, 2020.</strong> <em>Adult Mesh-Type Reference Computational Phantoms</em>. ICRP Publication 145. Ann. ICRP 49 (3). 
+            <br>
+            Official ICRP Page: <a href="https://www.icrp.org/publication.asp?id=ICRP%20Publication%20145" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">icrp.org/publication.asp?id=ICRP Publication 145</a> 
+            | DOI: <a href="https://doi.org/10.1177/0146645319893600" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">10.1177/0146645319893600</a>
+          </li>
+          <li>
+            <strong>Kim CH, Yeom YS, Petoussi-Henss N, Zankl M, Bolch WE, Lee C, Choi C, Nguyen TT, Eckerman K, Kim HS, Han MC, Qiu R, Chung BS, Han H, Shin B. (2020).</strong> New mesh-type reference computational phantoms and their application to radiation protection dosimetry. <em>Radiation Protection Dosimetry</em> 190(2): 159-173. DOI: <a href="https://doi.org/10.1093/rpd/ncaa114" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">10.1093/rpd/ncaa114</a>.
+          </li>
+          <li>
+            <strong>Niita K, Sato T, Iwase H, Nose H, Nakashima H, Sihver L. (2006).</strong> PHITS — a particle and heavy ion transport code system. <em>Radiation Measurements</em> 41(9–10): 1080–1090.
+          </li>
+          <li>
+            <strong>ICRP, 2009.</strong> <em>Adult Reference Computational Phantoms</em>. ICRP Publication 110. Ann. ICRP 39 (2). 
+            <br>
+            Official ICRP Page: <a href="https://www.icrp.org/publication.asp?id=icrp%20publication%20110" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">icrp.org/publication.asp?id=icrp publication 110</a>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="theory-footer">
+      <button class="nav-btn nav-btn-highlight" id="btnFooterClosePhantom">Close</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast">Notification</div>
 
 <script>
@@ -939,16 +1103,18 @@ function showToast(msg) {
 
 function renderMathFormulas() {
   if (typeof renderMathInElement === 'function') {
-    const el = document.getElementById('theoryModal');
-    if (el) {
-      renderMathInElement(el, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false }
-        ],
-        throwOnError: false
-      });
-    }
+    ['theoryModal', 'phantomModal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        renderMathInElement(el, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    });
   }
 }
 
@@ -958,6 +1124,31 @@ function switchTheoryTab(tabNum) {
   const tab2 = document.getElementById('theoryTab2');
   const btn1 = document.getElementById('tabBtn1');
   const btn2 = document.getElementById('tabBtn2');
+
+  if (tabNum === 1) {
+    tab1.style.display = '';
+    tab2.style.display = 'none';
+    btn1.style.borderBottomColor = 'var(--accent)';
+    btn1.style.color = 'var(--accent)';
+    btn2.style.borderBottomColor = 'transparent';
+    btn2.style.color = 'var(--text-secondary)';
+  } else {
+    tab1.style.display = 'none';
+    tab2.style.display = '';
+    btn2.style.borderBottomColor = 'var(--accent)';
+    btn2.style.color = 'var(--accent)';
+    btn1.style.borderBottomColor = 'transparent';
+    btn1.style.color = 'var(--text-secondary)';
+  }
+  renderMathFormulas();
+}
+
+// Phantom Modal Tab Switching
+function switchPhantomTab(tabNum) {
+  const tab1 = document.getElementById('phantomTab1');
+  const tab2 = document.getElementById('phantomTab2');
+  const btn1 = document.getElementById('phantomTabBtn1');
+  const btn2 = document.getElementById('phantomTabBtn2');
 
   if (tabNum === 1) {
     tab1.style.display = '';
@@ -1090,9 +1281,29 @@ function setupEventListeners() {
   theoryModal.addEventListener('click', (e) => {
     if (e.target === theoryModal) closeModal();
   });
+
+  // Phantom Modal Event Listeners
+  const phantomModal = document.getElementById('phantomModal');
+  const openPhantomModal = () => {
+    phantomModal.classList.add('active');
+    switchPhantomTab(1);
+    renderMathFormulas();
+  };
+  const closePhantomModal = () => {
+    phantomModal.classList.remove('active');
+  };
+
+  document.getElementById('btnOpenPhantom').addEventListener('click', openPhantomModal);
+  document.getElementById('btnClosePhantom').addEventListener('click', closePhantomModal);
+  document.getElementById('btnFooterClosePhantom').addEventListener('click', closePhantomModal);
+  phantomModal.addEventListener('click', (e) => {
+    if (e.target === phantomModal) closePhantomModal();
+  });
+
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && theoryModal.classList.contains('active')) {
-      closeModal();
+    if (e.key === 'Escape') {
+      if (theoryModal.classList.contains('active')) closeModal();
+      if (phantomModal.classList.contains('active')) closePhantomModal();
     }
   });
 
